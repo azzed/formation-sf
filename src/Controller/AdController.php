@@ -4,14 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Ad;
 use App\Form\AdType;
-use App\Repository\AdRepository;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Flex\Response;
 use App\Entity\Image;
+use Symfony\Flex\Response;
+use App\Repository\AdRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdController extends AbstractController
 {
@@ -29,6 +31,8 @@ class AdController extends AbstractController
      * Permet de créer une annonce
      *
      * @Route("/ads/new",name="ads_create")
+     * 
+     * @IsGranted("ROLE_USER")
      * @return Response
      */
     public function create(Request $request, ObjectManager $manager)
@@ -61,7 +65,8 @@ class AdController extends AbstractController
 
     /**
      * Permet de modifier une annonce
-     *@Route("/ads/{slug}/edit",name="ads_edit")
+     * @Route("/ads/{slug}/edit",name="ads_edit")
+     * @Security("is_granted('ROLE_USER') and user === ad.getAuthor()",message="Cette annonce nous vous appartient pas")
      * @return Response
      */
     public function edit(Ad $ad, ObjectManager $manager, Request $request)
@@ -103,6 +108,25 @@ class AdController extends AbstractController
             'ad' => $ad
         ]);
     }
+    /**
+     * Permet a l'utilisateur de supprimer ses annonces
+     *
+     * @Route("/ads/{slug}/delete",name="ads_delete")
+     * @Security("is_granted('ROLE_USER') and user === ad.getAuthor()")
+     * 
+     * @param Ad $ad
+     * @param ObjectManager $manager
+     * @return void
+     */
+    public function delete(Ad $ad, ObjectManager $manager)
+    {
+        $manager->remove($ad);
+        $manager->flush();
+        $this->addFlash(
+            'success',
+            "l'annonce {$ad->getTitle()} a bien été supprimer"
+        );
+        return $this->redirectToRoute("ads_index");
 
-
+    }
 }
