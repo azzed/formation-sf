@@ -11,6 +11,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Entity\Booking;
+use App\Entity\Comment;
 
 class AppFixtures extends Fixture
 {
@@ -111,6 +112,19 @@ class AppFixtures extends Fixture
                     ->setComment($comment);
 
                 $manager->persist($booking);
+
+                //Gestion de commentaire
+                if (mt_rand(0, 1)) {
+                    $comment = new Comment();
+
+                    $comment->setContent($faker->paragraph())
+                        ->setRating(mt_rand(1, 5))
+                        ->setAuthor($booker)
+                        ->setAd($ad);
+
+                    $manager->persist($comment);
+
+                }
 
             }
             $manager->persist($ad);

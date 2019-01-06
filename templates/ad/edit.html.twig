@@ -3,11 +3,41 @@
 {% form_theme form "ad/_collection.html.twig" %}
 {% block body %}
     <div class="container">
-        <h1>Modifier l'annonce :
+        <h1 class="my-5">Modifier l'annonce :
             {{ ad.title }}</h1>
         {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <button type="submit" class="btn btn-primary">Créer une nouvelle annonce</button>
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-light">
+                    <h2>Information general</h2>
+                    <hr>
+                    {{form_row(form.title)}}
+                    {{form_row(form.slug)}}
+                    {{form_row(form.price)}}
+                    {{form_row(form.rooms)}}
+                </div>
+                <div class="alert alert-light">
+                    <h2>Détails de l'annonce</h2>
+                    <hr>
+                    {{form_row(form.introduction)}}
+                    {{form_row(form.content)}}
+                </div>
+            </div>
+            <div class="col">
+                <div class="alert alert-light">
+                    <h2>Image de l'annonce</h2>
+                    <hr>
+                    {{form_row(form.coverImage)}}
+                    {{form_row(form.images)}}
+                </div>
+            </div>
+        </div>
+        <div class="alert alert-light clearfix">
+            <p>Vous avez finis ? Vous pouvez modifier votre annonce
+            </p>
+            <button type="submit" class="btn btn-primary float-right ">
+                <i class="fas fa-save"></i>&nbsp; Modifier votre annonce</button>
+        </div>
         {{ form_end(form) }}
     </div>
 

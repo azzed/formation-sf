@@ -15,6 +15,7 @@ class ImageType extends AbstractType
     {
         $builder
             ->add('url', UrlType::class, [
+
                 'attr' => [
                     'placeholder' => "Url de l'image"
                 ]

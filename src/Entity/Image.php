@@ -57,7 +57,7 @@ class Image
         return $this->caption;
     }
 
-    public function setCaption(string $caption) : self
+    public function setCaption(? string $caption) : self
     {
         $this->caption = $caption;
 
