@@ -34,7 +34,7 @@ class Booking
     /**
      * @ORM\Column(type="datetime")
      * @Assert\Date(message="Attention, la date doit etre au bon format")
-     * @Assert\GreaterThan("today",message="la date d'arrivé doit etre ulterieur")
+     * @Assert\GreaterThan("today",message="la date d'arrivé doit etre ulterieur",groups={"front"})
      * 
      */
     private $startDate;
@@ -64,6 +64,7 @@ class Booking
      * Callback appelé à chaque fois qu'on crée une reservation
      * 
      * @ORM\PrePersist
+     * @ORM\PreUpdate
      *
      * @return void
      */

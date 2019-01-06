@@ -22,7 +22,7 @@ class AdminAdController extends AbstractController
         ]);
     }
     /**
-     * Permet d'afficher le formulaire
+     * Permet de modifier  une annonce
      * @Route("/admin/ads/{id}/edit", name="admin_ads_edit")
      * 
      * @param Ad $ad
@@ -49,5 +49,33 @@ class AdminAdController extends AbstractController
             'ad' => $ad,
             'form' => $form->createView()
         ]);
+    }
+    /**
+     * Permet de supprimer une annonce
+     * 
+     * @Route("/admin/ads/{id}/delete", name="admin_ads_delete")
+     *
+     * @param Ad $ad
+     * @param ObjectManager $manager
+     * @return Response
+     */
+    public function delete(Ad $ad, ObjectManager $manager)
+    {
+        if (count($ad->getBookings()) > 0) {
+            $this->addFlash(
+                'warning',
+                "Vous nous pouvez pas supprimer l'annonce <strong>{$ad->getTitle()}</strong> car il y a deja des reservation"
+            );
+        } else {
+            $manager->remove($ad);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "<p>L'annonce <strong>{$ad->getTitle()}</strong>  a bien etais supprimer</p>"
+            );
+        }
+
+        return $this->redirectToRoute('admin_ads_index');
     }
 }

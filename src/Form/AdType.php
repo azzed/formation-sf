@@ -33,7 +33,7 @@ class AdType extends ApplicationType
                 CollectionType::class,
                 [
                     'entry_type' => ImageType::class,
-                    'allow_add' => true
+                    'allow_delete' => true
                 ]
             );
     }

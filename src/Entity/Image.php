@@ -57,7 +57,7 @@ class Image
         return $this->caption;
     }
 
-    public function setCaption(? string $caption) : self
+    public function setCaption(string $caption) : self
     {
         $this->caption = $caption;
 
@@ -69,7 +69,7 @@ class Image
         return $this->ad;
     }
 
-    public function setAd(? Ad $ad) : self
+    public function setAd(Ad $ad) : self
     {
         $this->ad = $ad;
 
